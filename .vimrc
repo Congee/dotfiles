@@ -1,74 +1,68 @@
-""" vundle settings
 set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#begin()
-let g:vundle_default_git_proto = 'git'
-" let Vundle manage Vundle
-" required!
-Plugin 'gmarik/vundle'
+call plug#begin()
+let g:plug_url_format = 'git://github.com/%s.git'
 
-"Plugin 'gerw/vim-latex-suite'
-"Plugin 'xuhdev/vim-latex-live-preview'
-"Plugin 'Glench/Vim-Jinja2-Syntax'
-"Plugin 'dhruvasagar/vim-table-mode'
-"Plugin 'toyamarinyon/vim-swift'
-"Plugin 'vim-scripts/TagHighlight'
-"Plugin 'zaiste/tmux.vim'
-"Plugin 'benmills/vimux'
-"Plugin 'jceb/vim-orgmode'
-"Plugin 'jalcine/cmake.vim'
-"Plugin 'bbchung/clighter'
-"Plugin 'chrisbra/csv.vim'
-"Plugin 'Congee/ycm_py3'
-"Plugin 'jeaye/color_coded'
-"
-Plugin 'rking/ag.vim'
-Plugin 'a.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'bling/vim-airline'
-Plugin 'Rykka/colorv.vim'
-Plugin 'rhysd/vim-clang-format'
-Plugin 'vim-scripts/asmx86'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'hdima/python-syntax'
-Plugin 'IndentAnything'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'SirVer/ultisnips'
-Plugin 'Yggdroot/indentLine'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'honza/vim-snippets'
-Plugin 'tpope/vim-surround'
-Plugin 'mattn/emmet-vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'tell-k/vim-autopep8'
-Plugin 'xuhdev/SingleCompile'
-Plugin 'majutsushi/tagbar'
-Plugin 'myint/clang-complete'
-Plugin 'elzr/vim-json'
-Plugin 'junegunn/vim-peekaboo'
-Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
-Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'wting/rust.vim'
-Plugin 'phildawes/racer'
-Plugin 'congee/python-vim-instant-markdown'
-Plugin 'applescript.vim'
+Plug 'gerw/vim-latex-suite', {'for': 'tex'}
+"Plug 'xuhdev/vim-latex-live-preview'
+"Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'dhruvasagar/vim-table-mode', {'for': 'markdown'}
+Plug 'toyamarinyon/vim-swift', {'for': 'swift'}
+"Plug 'vim-scripts/TagHighlight'
+"Plug 'zaiste/tmux.vim'
+"Plug 'benmills/vimux'
+"Plug 'jceb/vim-orgmode'
+"Plug 'jalcine/cmake.vim'
+"Plug 'bbchung/clighter'
+"Plug 'chrisbra/csv.vim'
+"Plug 'Congee/ycm_py3'
+"Plug 'jeaye/color_coded'
+
+Plug 'rking/ag.vim'
+Plug 'a.vim', {'for': ['c', 'cpp']}
+Plug 'godlygeek/tabular'
+Plug 'bling/vim-airline'
+Plug 'Rykka/colorv.vim', {'for': ['html', 'css', 'javascript']}
+Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
+Plug 'vim-scripts/asmx86'
+Plug 'Shougo/neocomplete.vim'
+Plug 'hdima/python-syntax', {'for': 'python'}
+Plug 'IndentAnything'
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+Plug 'SirVer/ultisnips'
+Plug 'Yggdroot/indentLine'
+Plug 'davidhalter/jedi-vim', {'for': 'python'}
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-surround'
+Plug 'mattn/emmet-vim', {'for': 'html'}
+Plug 'scrooloose/syntastic'
+Plug 'tell-k/vim-autopep8', {'for': 'python'}
+Plug 'xuhdev/SingleCompile'
+Plug 'majutsushi/tagbar'
+Plug 'myint/clang-complete', {'for': ['c', 'cpp']}
+Plug 'elzr/vim-json'
+Plug 'junegunn/vim-peekaboo'
+Plug 'scrooloose/nerdtree'
+Plug 'kien/ctrlp.vim'
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
+Plug 'wting/rust.vim', {'for': 'rust'}
+Plug 'phildawes/racer', {'for': 'rust'}
+Plug 'congee/python-vim-instant-markdown'
+Plug 'applescript.vim'
 
 """ Colorscheme:
-Plugin 'molokai'
-"Plugin 'tomasr/molokai'
-"Plugin 'jdkanani/vim-material-theme'
-"Plugin 'reedes/vim-colors-pencil'
-"Plugin 'john2x/flatui.vim'
-"Plugin 'altercation/vim-colors-solarized'
+Plug 'molokai'
+"Plug 'tomasr/molokai'
+"Plug 'jdkanani/vim-material-theme'
+"Plug 'reedes/vim-colors-pencil'
+"Plug 'john2x/flatui.vim'
+"Plug 'altercation/vim-colors-solarized'
 
-call vundle#end() 
+call plug#end() 
 
 colorscheme molokai
 let g:molokai_original = 1
 let g:solarized_termcolors = 256
-if strftime("%H") >= 5 && strftime("%H") <= 17
+if strftime("%H") >= 5 && strftime("%H") <= 18
   set background=light
 else
   set background=dark
@@ -133,19 +127,21 @@ set tabstop=4
 set shiftwidth=4
 set noexpandtab
 set backspace=indent,eol,start
-au BufEnter,VimEnter,VimResized,WinEnter * if winheight(0) >= 24 && winwidth(0) >= 80 | setl nu | endif
+au BufEnter,VimEnter,VimResized,WinEnter *
+			\ if winheight(0) >= 24 && winwidth(0) >= 80 | setl nu | endif
 
 " vim-table-mode
 let g:table_mode_corner_corner   = '+'
 let g:table_mode_header_fillchar = '='
 
 " vim-clang-format
+let g:clang_format#command = "/usr/local/opt/llvm/bin/clang-format"
 let g:clang_format#code_style = "google"
 "let g:clang_format#auto_format_on_insert_leave = 1
 let g:clang_format#style_options = {
 			\ "IndentWidth" : 2,
 			\ "AlignTrailingComments" : "true",
-            \ "AllowShortFunctionsOnASingleLine" : "false",
+			\ "AllowShortFunctionsOnASingleLine" : "false",
 			\ "AllowShortIfStatementsOnASingleLine" : "true",
 			\ "AllowShortLoopsOnASingleLine" : "true",
 			\ "AllowAllParametersOfDeclarationOnNextLine" : "true",
@@ -163,7 +159,8 @@ noremap <CR> o<Esc>
 noremap <Space> a<Space><Esc>
 "noremap <Esc> :nohl<CR><Esc>
 filetype plugin indent on
-cnoreabbrev <expr> h ((getcmdtype() is# ':' && getcmdline() is# 'h')?('h'):('tab h'))
+cnoreabbrev <expr> h
+			\ ((getcmdtype() is# ':' && getcmdline() is# 'h')?('h'):('tab h'))
 
 augroup buffer_new
 	au BufRead,BufNewFile *.ejs   set filetype=html
@@ -176,12 +173,12 @@ augroup END
 au FileType zsh,lisp,coffee,jade,ruby,html set shiftwidth=2 tabstop=2
 
 
-"Plugin 'fatih/vim-go'
-"let g:go_disable_autoinstall = 1
-"let g:go_auto_type_info = 1
-"let g:go_highlight_functions = 1
-"let g:go_highlight_methods = 1
-"let g:go_highlight_structs = 1
+Plug 'fatih/vim-go', {'for': 'go'}
+let g:go_disable_autoinstall = 1
+let g:go_auto_type_info = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
 
 """ vim-markdown
 autocmd FileType markdown setl shell=bash\ -i
@@ -211,7 +208,7 @@ let g:UltiSnipsUsePythonVersion = 3
 """ NERDTree
 nmap <Leader>nt :NERDTreeToggle<cr>
 
-"Plugin 'gelguy/Cmd2.vim'
+"Plug 'gelguy/Cmd2.vim'
 
 """ js-beautify
 augroup html
@@ -225,7 +222,7 @@ augroup END
 autocmd BufNewFile,BufRead man noremap	q :q<cr>
 
 """ ipython integrated
-"Plugin 'ivanov/vim-ipython'
+"Plug 'ivanov/vim-ipython'
 
 " autopep8
 let g:autopep8_disable_show_diff=1
@@ -248,14 +245,16 @@ let g:syntastic_gcc_config_file = '.clang_complete'
 
 let g:syntastic_python_python_exe = 'python3'	"python3 support
 let g:syntastic_python_checkers=['pep8']
-let g:syntastic_python_pylint_quiet_messages = {"level": "warning"} " silence warnings
+" to silence warnings
+let g:syntastic_python_pylint_quiet_messages = {"level": "warning"}
 
 let g:syntastic_nasm_nasm_args = "-X gnu"
 " E301, E302, E303, E304 => Extra blank lines may be used (sparingly)
 " W391 => JCR: Trailing blank lines are superfluous.
 " E501 => Limit all lines to a maximum of 79 characters.
 " let g:syntastic_python_pylint_args='--ignore=E501,W391,E301,E302,E303,E304'
-let g:syntastic_python_pep8_args='--ignore=E501,W391,E122,E128,E301,E302,E303,E304'
+let g:syntastic_python_pep8_args=
+			\ '--ignore=E501,W391,E122,E128,E266,E301,E302,E303,E304'
 let g:syntastic_zsh_shellcheck_args='--exclude=SC2016,SC2046,SC2086'
 
 "debug
@@ -281,7 +280,8 @@ setlocal completeopt-=preview
 let g:clang_debug = 0
 let g:clang_complete_auto = 0
 let g:clang_user_options = "-std=c++11"
-let g:clang_library_path = '/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'
+let g:clang_library_path =
+			\ '/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'
 let g:clang_conceal_snippets = 1
 " don't auto select first completion candiate
 imap <C-X><C-O> <C-X><C-O><C-P>
@@ -312,7 +312,7 @@ let g:neocomplete#enable_auto_select = 0
 """ Using the jedi-python autocompletion library for VIM.
 autocmd FileType python,c,cpp NeoCompleteLock
 
-"Plugin 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 "let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 "let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 "
@@ -328,14 +328,16 @@ let g:jedi#force_py_version = 3
 let g:jedi#popup_on_dot = 0
 " don't select first autoly
 let g:jedi#popup_select_first = 1
-hi jediFunction term=NONE cterm=NONE ctermfg=6 guifg=Black gui=NONE ctermbg=0 guibg=Grey
+hi jediFunction
+			\ term=NONE cterm=NONE ctermfg=6 ctermbg=0
+			\ guifg=Black gui=NONE guibg=Grey
 
 let g:indentLine_enabled = 0
 let g:indentLine_char = '┊'
 autocmd FileType python let g:indentLine_enabled = 1
 let g:indentLine_color_term = 239
 
-"Plugin 'kien/rainbow_parentheses.vim'
+"Plug 'kien/rainbow_parentheses.vim'
 "au VimEnter * :RainbowParenthesesToggle       " Toggle it on/off
 "au Syntax * :RainbowParenthesesLoadRound    " (), the default when toggling
 "au Syntax * :RainbowParenthesesLoadSquare   " []

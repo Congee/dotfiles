@@ -1,12 +1,48 @@
 set nocompatible
+
 call plug#begin()
 let g:plug_url_format = 'git://github.com/%s.git'
 
+Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
+Plug 'Shougo/vimproc.vim'
+Plug 'tpope/vim-dispatch'
+Plug 'Quramy/tsuquyomi', {'for': 'typescript', 'do': 'VimProcInstall'}
 Plug 'gerw/vim-latex-suite', {'for': 'tex'}
-"Plug 'xuhdev/vim-latex-live-preview'
-"Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'dhruvasagar/vim-table-mode', {'for': 'markdown'}
 Plug 'toyamarinyon/vim-swift', {'for': 'swift'}
+Plug 'a.vim', {'for': ['c', 'cpp']}
+Plug 'rking/ag.vim'
+Plug 'godlygeek/tabular'
+Plug 'bling/vim-airline'
+Plug 'Rykka/colorv.vim', {'for': ['html', 'css', 'javascript']}
+Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
+Plug 'vim-scripts/asmx86', {'for': ['nasm', 'asm']}
+Plug 'Shougo/neocomplete.vim'
+Plug 'hdima/python-syntax', {'for': 'python'}
+Plug 'IndentAnything'
+Plug 'tpope/vim-surround'
+Plug 'Yggdroot/indentLine'
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'davidhalter/jedi-vim', {'for': 'python'}
+Plug 'mattn/emmet-vim', {'for': 'html'}
+Plug 'scrooloose/syntastic'
+Plug 'tell-k/vim-autopep8', {'for': 'python'}
+Plug 'xuhdev/SingleCompile'
+Plug 'majutsushi/tagbar'
+Plug 'myint/clang-complete', {'for': ['c', 'cpp']}
+Plug 'elzr/vim-json', {'for': 'json'}
+Plug 'junegunn/vim-peekaboo'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'kien/ctrlp.vim'
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
+Plug 'wting/rust.vim', {'for': 'rust'}
+Plug 'phildawes/racer', {'for': 'rust'}
+Plug 'congee/python-vim-instant-markdown'
+Plug 'applescript.vim', {'for': 'applescript'}
+
+"Plug 'xuhdev/vim-latex-live-preview'
+"Plug 'Glench/Vim-Jinja2-Syntax'
 "Plug 'vim-scripts/TagHighlight'
 "Plug 'zaiste/tmux.vim'
 "Plug 'benmills/vimux'
@@ -16,38 +52,6 @@ Plug 'toyamarinyon/vim-swift', {'for': 'swift'}
 "Plug 'chrisbra/csv.vim'
 "Plug 'Congee/ycm_py3'
 "Plug 'jeaye/color_coded'
-
-Plug 'rking/ag.vim'
-Plug 'a.vim', {'for': ['c', 'cpp']}
-Plug 'godlygeek/tabular'
-Plug 'bling/vim-airline'
-Plug 'Rykka/colorv.vim', {'for': ['html', 'css', 'javascript']}
-Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
-Plug 'vim-scripts/asmx86'
-Plug 'Shougo/neocomplete.vim'
-Plug 'hdima/python-syntax', {'for': 'python'}
-Plug 'IndentAnything'
-Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'SirVer/ultisnips'
-Plug 'Yggdroot/indentLine'
-Plug 'davidhalter/jedi-vim', {'for': 'python'}
-Plug 'honza/vim-snippets'
-Plug 'tpope/vim-surround'
-Plug 'mattn/emmet-vim', {'for': 'html'}
-Plug 'scrooloose/syntastic'
-Plug 'tell-k/vim-autopep8', {'for': 'python'}
-Plug 'xuhdev/SingleCompile'
-Plug 'majutsushi/tagbar'
-Plug 'myint/clang-complete', {'for': ['c', 'cpp']}
-Plug 'elzr/vim-json'
-Plug 'junegunn/vim-peekaboo'
-Plug 'scrooloose/nerdtree'
-Plug 'kien/ctrlp.vim'
-Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
-Plug 'wting/rust.vim', {'for': 'rust'}
-Plug 'phildawes/racer', {'for': 'rust'}
-Plug 'congee/python-vim-instant-markdown'
-Plug 'applescript.vim'
 
 """ Colorscheme:
 Plug 'molokai'
@@ -68,17 +72,17 @@ else
   set background=dark
 endif
 
-:cnoremap <C-A> <Home>
-:cnoremap <C-F> <Right>
-:cnoremap <C-B> <Left>
-:cnoremap <C-D> <Del>
-:cnoremap <Esc>b <S-Left>
-:cnoremap <Esc>f <S-Right>
+cnoremap <C-A> <Home>
+cnoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <C-D> <Del>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
 
-:nnoremap <M-h> <C-w>h
-:nnoremap <M-j> <C-w>j
-:nnoremap <M-k> <C-w>k
-:nnoremap <M-l> <C-w>l
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
 
 set ruler  " display cursor location
 set t_Co=256
@@ -92,6 +96,7 @@ set helpheight=23
 set incsearch
 set hlsearch
 let mapleader=","
+noremap Q <Nop>  " disable entering Ex mode
 
 let g:livepreview_previewer = 'open'
 
@@ -225,15 +230,15 @@ autocmd BufNewFile,BufRead man noremap	q :q<cr>
 "Plug 'ivanov/vim-ipython'
 
 " autopep8
-let g:autopep8_disable_show_diff=1
+let g:autopep8_disable_show_diff = 1
 
 """ Syntastic settings
 let g:syntastic_auto_jump=3	 "jump to the first detected error rather than warn
 let g:syntastic_auto_loc_list = 2
 
-let g:syntastic_c_compiler='clang'
-let g:syntastic_c_compiler_options=' -std=c11'
-let g:syntastic_c_checkers=['gcc', 'clang_tidy', 'clang_check']
+let g:syntastic_c_compiler = 'clang'
+let g:syntastic_c_compiler_options = ' -std=c11'
+let g:syntastic_c_checkers = ['gcc', 'clang_tidy', 'clang_check']
 let g:syntastic_c_clang_tidy_exec = "/usr/local/opt/llvm/bin/clang-tidy"
 let g:syntastic_c_clang_check_exec = "/usr/local/opt/llvm/bin/clang-check"
 
@@ -244,7 +249,7 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 let g:syntastic_gcc_config_file = '.clang_complete'
 
 let g:syntastic_python_python_exe = 'python3'	"python3 support
-let g:syntastic_python_checkers=['pep8']
+let g:syntastic_python_checkers = ['pep8']
 " to silence warnings
 let g:syntastic_python_pylint_quiet_messages = {"level": "warning"}
 
@@ -253,9 +258,11 @@ let g:syntastic_nasm_nasm_args = "-X gnu"
 " W391 => JCR: Trailing blank lines are superfluous.
 " E501 => Limit all lines to a maximum of 79 characters.
 " let g:syntastic_python_pylint_args='--ignore=E501,W391,E301,E302,E303,E304'
-let g:syntastic_python_pep8_args=
+let g:syntastic_python_pep8_args =
 			\ '--ignore=E501,W391,E122,E128,E266,E301,E302,E303,E304'
-let g:syntastic_zsh_shellcheck_args='--exclude=SC2016,SC2046,SC2086'
+let g:syntastic_zsh_shellcheck_args = '--exclude=SC2016,SC2046,SC2086'
+
+let g:syntastic_typescript_checkers = ['tslint']
 
 "debug
 "let g:syntastic_debug = 1
@@ -337,29 +344,12 @@ let g:indentLine_char = '┊'
 autocmd FileType python let g:indentLine_enabled = 1
 let g:indentLine_color_term = 239
 
-"Plug 'kien/rainbow_parentheses.vim'
-"au VimEnter * :RainbowParenthesesToggle       " Toggle it on/off
-"au Syntax * :RainbowParenthesesLoadRound    " (), the default when toggling
-"au Syntax * :RainbowParenthesesLoadSquare   " []
-"au Syntax * :RainbowParenthesesLoadBraces   " {}
-"au Syntax * :RainbowParenthesesLoadChevrons " <>
-
 """ Tagbar
 nmap <Leader>tb :TagbarToggle<cr>
 let g:tagbar_ctags_bin='/usr/local/bin/ctags'
-let g:tagbar_type_ruby = {
-			\ 'kinds' : [
-			\ 'm:modules',
-			\ 'c:classes',
-			\ 'd:describes',
-			\ 'C:contexts',
-			\ 'f:methods',
-			\ 'F:singleton methods'
-			\ ]
-			\ }
 
 """ FileFormats settings for CrossPlatform
-if has("unix") " Mac OS X is now unix
+if has("unix")  " Mac OS X is now unix
 	set fencs=utf8,gb18030,gbk,gb2312,ucs-bom
 	set termencoding=utf-8
 	""" Auto source .vimrc after saving.
@@ -376,15 +366,9 @@ if has("unix") " Mac OS X is now unix
 		""" Macvim MultiTab support
 		noremap <D-[> :tabprevious<cr>
 		noremap <D-]> :tabnext<cr>
-		map <D-1> 1gt
-		map <D-2> 2gt
-		map <D-3> 3gt
-		map <D-4> 4gt
-		map <D-5> 5gt
-		map <D-6> 6gt
-		map <D-7> 7gt
-		map <D-8> 8gt
-		map <D-9> 9gt
+		map <D-1> 1gt | map <D-2> 2gt | map <D-3> 3gt 
+	   	map <D-4> 4gt | map <D-5> 5gt | map <D-6> 6gt 
+	   	map <D-7> 7gt | map <D-8> 8gt | map <D-9> 9gt
 		map <D-0> :tablast<cr>
 	endif
 elseif has('win')

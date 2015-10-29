@@ -4,40 +4,42 @@ call plug#begin()
 let g:plug_url_format = 'git://github.com/%s.git'
 
 Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
-Plug 'Shougo/vimproc.vim'
-Plug 'tpope/vim-dispatch'
 Plug 'Quramy/tsuquyomi', {'for': 'typescript', 'do': 'VimProcInstall'}
 Plug 'gerw/vim-latex-suite', {'for': 'tex'}
 Plug 'dhruvasagar/vim-table-mode', {'for': 'markdown'}
 Plug 'toyamarinyon/vim-swift', {'for': 'swift'}
-Plug 'a.vim', {'for': ['c', 'cpp']}
+Plug 'gilligan/vim-lldb', {'for': ['c', 'cpp', 'objc']}
+Plug 'vim-scripts/a.vim', {'for': ['c', 'cpp']}
+Plug 'Shougo/vimproc.vim'
+Plug 'tpope/vim-dispatch'
 Plug 'rking/ag.vim'
 Plug 'godlygeek/tabular'
 Plug 'bling/vim-airline'
+Plug 'IndentAnything'
+Plug 'tpope/vim-surround'
+Plug 'Yggdroot/indentLine'
+Plug 'xuhdev/SingleCompile'
+Plug 'kien/ctrlp.vim'
+Plug 'junegunn/vim-peekaboo'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/syntastic'
 Plug 'Rykka/colorv.vim', {'for': ['html', 'css', 'javascript']}
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 Plug 'vim-scripts/asmx86', {'for': ['nasm', 'asm']}
 Plug 'Shougo/neocomplete.vim'
 Plug 'hdima/python-syntax', {'for': 'python'}
-Plug 'IndentAnything'
-Plug 'tpope/vim-surround'
-Plug 'Yggdroot/indentLine'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'mattn/emmet-vim', {'for': 'html'}
-Plug 'scrooloose/syntastic'
 Plug 'tell-k/vim-autopep8', {'for': 'python'}
-Plug 'xuhdev/SingleCompile'
-Plug 'majutsushi/tagbar'
 Plug 'myint/clang-complete', {'for': ['c', 'cpp']}
 Plug 'elzr/vim-json', {'for': 'json'}
-Plug 'junegunn/vim-peekaboo'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
-Plug 'kien/ctrlp.vim'
 Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
 Plug 'wting/rust.vim', {'for': 'rust'}
-Plug 'phildawes/racer', {'for': 'rust'}
+Plug 'phildawes/racer', {'for': 'Rust'}
+Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'congee/python-vim-instant-markdown'
 Plug 'applescript.vim', {'for': 'applescript'}
 
@@ -61,7 +63,7 @@ Plug 'molokai'
 "Plug 'john2x/flatui.vim'
 "Plug 'altercation/vim-colors-solarized'
 
-call plug#end() 
+call plug#end()
 
 colorscheme molokai
 let g:molokai_original = 1
@@ -96,7 +98,7 @@ set helpheight=23
 set incsearch
 set hlsearch
 let mapleader=","
-noremap Q <Nop>  " disable entering Ex mode
+noremap Q <Nop>  " prevent to enter Ex mode
 
 let g:livepreview_previewer = 'open'
 
@@ -106,6 +108,7 @@ let $RUST_SRC_PATH=$HOME . "/src/rust/rust/src"
 "must be set before syntax on
 "syntax on will override color settings while syntax enable won't
 
+au FileType rust let b:dispatch = 'cargo build'
 
 """ Syntax:
 "syntax enable
@@ -144,13 +147,14 @@ let g:clang_format#command = "/usr/local/opt/llvm/bin/clang-format"
 let g:clang_format#code_style = "google"
 "let g:clang_format#auto_format_on_insert_leave = 1
 let g:clang_format#style_options = {
-			\ "IndentWidth" : 2,
+			\ "IndentWidth" : 4,
 			\ "AlignTrailingComments" : "true",
 			\ "AllowShortFunctionsOnASingleLine" : "false",
 			\ "AllowShortIfStatementsOnASingleLine" : "true",
 			\ "AllowShortLoopsOnASingleLine" : "true",
 			\ "AllowAllParametersOfDeclarationOnNextLine" : "true",
 			\}
+let g:clang_format#style_options = {}
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 "map <Leader>f :py3f $HOME/.vim/clang-format.py<CR>
@@ -175,6 +179,7 @@ augroup buffer_new
 	au BufRead,BufNewFile *.nasm  set filetype=nasm
 	au BufRead,BufNewFile *.sb    set filetype=scheme
 augroup END
+au FileType typescript nnoremap <Leader>h	:echo tsuquyomi#hint()<cr>
 au FileType zsh,lisp,coffee,jade,ruby,html set shiftwidth=2 tabstop=2
 
 
@@ -218,13 +223,13 @@ nmap <Leader>nt :NERDTreeToggle<cr>
 """ js-beautify
 augroup html
 	autocmd!
-	au BufNewFile,BufRead javascript noremap <Leader>fm :call JsBeautify()<cr>
-	au BufNewFile,BufRead html       noremap <Leader>fm	:call HtmlBeautify()<cr>
-	au BufNewFile,BufRead CSS        noremap <Leader>fm :call CSSBeautify()<cr>
+	au FileType javascript noremap <Leader>fm :call JsBeautify()<cr>
+	au FileType html       noremap <Leader>fm	:call HtmlBeautify()<cr>
+	au FileType CSS        noremap <Leader>fm :call CSSBeautify()<cr>
 augroup END
 
 """ Pressing q to quit when using vim as a Manpager.
-autocmd BufNewFile,BufRead man noremap	q :q<cr>
+autocmd FileType man noremap	q :q<cr>
 
 """ ipython integrated
 "Plug 'ivanov/vim-ipython'
@@ -238,7 +243,8 @@ let g:syntastic_auto_loc_list = 2
 
 let g:syntastic_c_compiler = 'clang'
 let g:syntastic_c_compiler_options = ' -std=c11'
-let g:syntastic_c_checkers = ['gcc', 'clang_tidy', 'clang_check']
+"let g:syntastic_c_checkers = ['gcc', 'clang_tidy', 'clang_check']
+let g:syntastic_c_checkers = ['clang_tidy']
 let g:syntastic_c_clang_tidy_exec = "/usr/local/opt/llvm/bin/clang-tidy"
 let g:syntastic_c_clang_check_exec = "/usr/local/opt/llvm/bin/clang-check"
 
@@ -249,7 +255,7 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 let g:syntastic_gcc_config_file = '.clang_complete'
 
 let g:syntastic_python_python_exe = 'python3'	"python3 support
-let g:syntastic_python_checkers = ['pep8']
+let g:syntastic_python_checkers = ['flake8', 'pep8']
 " to silence warnings
 let g:syntastic_python_pylint_quiet_messages = {"level": "warning"}
 
@@ -347,6 +353,7 @@ let g:indentLine_color_term = 239
 """ Tagbar
 nmap <Leader>tb :TagbarToggle<cr>
 let g:tagbar_ctags_bin='/usr/local/bin/ctags'
+let g:rtagsUseDefaultMappings = 0
 
 """ FileFormats settings for CrossPlatform
 if has("unix")  " Mac OS X is now unix
@@ -366,10 +373,10 @@ if has("unix")  " Mac OS X is now unix
 		""" Macvim MultiTab support
 		noremap <D-[> :tabprevious<cr>
 		noremap <D-]> :tabnext<cr>
-		map <D-1> 1gt | map <D-2> 2gt | map <D-3> 3gt 
-	   	map <D-4> 4gt | map <D-5> 5gt | map <D-6> 6gt 
-	   	map <D-7> 7gt | map <D-8> 8gt | map <D-9> 9gt
-		map <D-0> :tablast<cr>
+		noremap <D-1> 1gt | noremap <D-2> 2gt | noremap <D-3> 3gt
+	   	noremap <D-4> 4gt | noremap <D-5> 5gt | noremap <D-6> 6gt
+	   	noremap <D-7> 7gt | noremap <D-8> 8gt | noremap <D-9> 9gt
+		noremap <D-0> :tablast<cr>
 	endif
 elseif has('win')
 	autocmd! bufwritepost _vimrc source ~/_vimrc

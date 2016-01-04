@@ -1,6 +1,6 @@
 set nocompatible
 " TODO: learn this:
-" gi, gf, gD, CTRL-W f, [d, [-CTRL-D, [i, [_CTRL-I, g??
+" gi, gf, gD, CTRL-W f, [d, [-CTRL-D, [i, [_CTRL-I, g??(rot13)
 " z., z<CR>, zM, zi, zj, zk, za
 " g8. :nf, v_CTRL-X_s, yiw, gv, gn
 " MIGRATE TO Python2
@@ -8,10 +8,9 @@ set nocompatible
 call plug#begin()
 let g:plug_url_format = 'git://github.com/%s.git'
 
-Plug 'Shougo/vimshell.vim'
 Plug 'bling/vim-bufferline'
 Plug 'airblade/vim-gitgutter'
-Plug 'kshenoy/vim-signature'
+"Plug 'kshenoy/vim-signature'
 Plug 'aperezdc/vim-template'
 Plug 'leafgarland/typescript-vim', {'for': 'typescript'}
 Plug 'Quramy/tsuquyomi', {'for': 'typescript', 'do': 'VimProcInstall'}
@@ -19,8 +18,7 @@ Plug 'gerw/vim-latex-suite', {'for': 'tex'}
 Plug 'dhruvasagar/vim-table-mode', {'for': 'markdown'}
 Plug 'toyamarinyon/vim-swift', {'for': 'swift'}
 Plug 'vim-scripts/a.vim', {'for': ['c', 'cpp']}
-Plug 'lyuts/vim-rtags', {'for': ['c', 'cpp']}
-Plug 'Shougo/vimproc.vim'
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'tpope/vim-dispatch'
 Plug 'rking/ag.vim'
 Plug 'godlygeek/tabular'
@@ -44,13 +42,15 @@ Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Glench/Vim-Jinja2-Syntax'", {'for': 'html'}
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
-Plug 'python-rope/ropevim', {'for': 'python'}
 Plug 'mattn/emmet-vim', {'for': 'html'}
-Plug 'Valloric/YouCompleteMe', {'for': ['c', 'cpp', 'objc', 'java']}
+Plug 'Valloric/YouCompleteMe', {
+  \'for': ['c', 'cpp', 'objc', 'java', 'go', 'javascript'],
+  \'do': './setup.sh'}
 Plug 'elzr/vim-json', {'for': 'json'}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['c', 'cpp']}
 Plug 'wting/rust.vim', {'for': 'rust'}
+Plug 'rhysd/rust-doc.vim', {'for': 'rust'}
 Plug 'racer-rust/vim-racer', {'for': 'rust'}
 Plug 'applescript.vim', {'for': 'applescript'}
 Plug 'benmills/vimux'
@@ -61,7 +61,6 @@ Plug 'benmills/vimux'
 "Plug 'vim-scripts/TagHighlight'
 "Plug 'jceb/vim-orgmode'
 "Plug 'jalcine/cmake.vim', {'for': 'cmake'}
-"Plug 'bbchung/clighter'
 "Plug 'chrisbra/csv.vim'
 "Plug 'jeaye/color_coded'
 
@@ -77,14 +76,16 @@ Plug 'molokai'
 call plug#end()
 se rtp+=~/.vim/pyclewn/runtime
 " }}}
-color molokai
-let g:molokai_original = 1
-let g:solarized_termcolors = 256
+"
 if strftime("%H") >= 5 && strftime("%H") <= 18
   set background=light
 else
   set background=dark
 endif
+
+color molokai
+let g:molokai_original = 1
+let g:solarized_termcolors = 256
 
 set ruler  " display cursor location
 set t_Co=256
@@ -94,11 +95,16 @@ set cursorline
 se spelllang=en_us
 "set dictionary=/usr/share/dict/words
 
+" For iTerm2 on OS X:
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+
 setlocal cc=80
 set helpheight=23
 set incsearch
 set hlsearch
-
+let g:templates_no_builtin_templates = 1
 let g:livepreview_previewer = 'open'
 
 " {{{ Key mappings
@@ -155,6 +161,7 @@ set shiftwidth=4
 set noexpandtab
 set backspace=indent,eol,start
 set cinoptions=i0
+set numberwidth=1
 au BufEnter,VimEnter,VimResized,WinEnter *
 			\ if winheight(0) >= 24 && winwidth(0) >= 80 | setl nu | endif
 " }}}
@@ -198,6 +205,7 @@ augroup buffer_new
 augroup END
 au FileType typescript nnoremap <Leader>h	:echo tsuquyomi#hint()<cr>
 au FileType zsh,lisp,cpp,coffee,jade,ruby,html set shiftwidth=2 tabstop=2
+au FileType ruby set expandtab
 
 " {{{ gocode
 "let g:go_disable_autoinstall = 1
@@ -221,7 +229,7 @@ let g:UltiSnipsListSnippets="<c-tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
-let g:UltiSnipsSnippetDirectories=["UltiSnips"] " snippets path
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips', "UltiSnips"]
 let g:UltiSnipsUsePythonVersion = 2
 " let g:UltiSnipsDontReverseSearchPath="1" " Traverse in reverse order
 
@@ -229,7 +237,7 @@ let g:UltiSnipsUsePythonVersion = 2
 augroup html
 	autocmd!
 	au FileType javascript noremap <Leader>fm :call JsBeautify()<cr>
-	au FileType html       noremap <Leader>fm	:call HtmlBeautify()<cr>
+	au FileType html       noremap <Leader>fm :call HtmlBeautify()<cr>
 	au FileType CSS        noremap <Leader>fm :call CSSBeautify()<cr>
 augroup END
 
@@ -252,7 +260,7 @@ let g:syntastic_nasm_nasm_args = "-X gnu"
 " E501 => Limit all lines to a maximum of 79 characters.
 " let g:syntastic_python_pylint_args='--ignore=E501,W391,E301,E302,E303,E304'
 let g:syntastic_python_pep8_args =
-			\ '--ignore=E501,W391,E122,E128,E266,E301,E302,E303,E304'
+			\ '--ignore=E731,E501,W391,E122,E128,E266,E301,E302,E303,E304'
 let g:syntastic_zsh_shellcheck_args = '--exclude=SC2016,SC2046,SC2086'
 
 let g:syntastic_typescript_checkers = ['tslint']
@@ -275,7 +283,7 @@ augroup filetype_python
 augroup END
 
 augroup syntax_omnifunc
-	au FileType swift,applescript,cmake setl omnifunc=syntaxcomplete#Complete
+	au FileType nasm,swift,applescript,cmake,make setl omnifunc=syntaxcomplete#Complete
 augroup END
 
 setlocal completeopt-=preview
@@ -315,7 +323,7 @@ endfunction
 let g:neocomplete#enable_auto_select = 0
 
 """ Using the jedi-python autocompletion library for VIM.
-autocmd FileType python,c,cpp,objc,java NeoCompleteLock
+autocmd FileType python,c,cpp,objc,java,javascript NeoCompleteLock
 
 let g:ycm_auto_trigger = 0
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -332,8 +340,6 @@ nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>gt :YcmCompleter GetType<CR>
 
 let g:jedi#auto_vim_configuration = 0
-" only use python3
-let g:jedi#force_py_version = 3
 " don't popup on typing dot
 let g:jedi#popup_on_dot = 0
 " don't select first autoly
@@ -352,7 +358,6 @@ let g:indentLine_color_term = 239
 """ Tagbar
 nmap <Leader>tb :TagbarToggle<cr>
 let g:tagbar_ctags_bin='/usr/local/bin/ctags'
-let g:rtagsUseDefaultMappings = 0
 
 """ FileFormats settings for CrossPlatform
 if has("unix")  " Mac OS X is now unix
@@ -363,18 +368,19 @@ if has("unix")  " Mac OS X is now unix
 	""" MacVimsettings
 	if has("gui_macvim")
 		set go=aAce
-		set transparency=15
+		set transparency=0
 		set guifont=Monaco\ for\ Powerline:h13
 		set showtabline=1
 		set columns=83
 		set lines=24
 		colorscheme molokai
+		let g:UltiSnipsUsePythonVersion = 3
 		""" Macvim MultiTab support
 		noremap <D-[> :tabprevious<cr>
 		noremap <D-]> :tabnext<cr>
 		noremap <D-1> 1gt | noremap <D-2> 2gt | noremap <D-3> 3gt
-	   	noremap <D-4> 4gt | noremap <D-5> 5gt | noremap <D-6> 6gt
-	   	noremap <D-7> 7gt | noremap <D-8> 8gt | noremap <D-9> 9gt
+		noremap <D-4> 4gt | noremap <D-5> 5gt | noremap <D-6> 6gt
+		noremap <D-7> 7gt | noremap <D-8> 8gt | noremap <D-9> 9gt
 		noremap <D-0> :tablast<cr>
 	endif
 elseif has('win')
@@ -383,5 +389,13 @@ endif
 
 if has('mouse') | se mouse=a | endif
 command! DeleteTrailingWhiteSpaces %s/\s\+$//ge
-
-" vim: se fdm=marker:
+function! s:clang_rename(name)
+	let clang_rename = "/usr/local/opt/llvm/bin/clang-rename"
+    let offset = line2byte(line(".")) + col(".") - 1
+	let cmd = clang_rename . " -i" . " -offset=" . offset
+				\ . " -new-name=" . a:name . " " . expand("%:p") . " --"
+    call system(cmd)
+    edit!
+endfunction
+command! -nargs=1 ClangRename call s:clang_rename(<f-args>)
+" vim: se fdm=marker sw=2 ts=2:
